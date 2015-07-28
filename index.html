@@ -8,6 +8,24 @@
     <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
     <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
     <link rel="stylesheet" type="text/css" href="stylesheets/github-light.css" media="screen">
+
+    <script>
+      function handler(location) {
+        console.log(location);
+        console.log(location.coords);
+        console.log(location.accuracy);
+      }
+      navigator.geolocation.getCurrentPosition(handler);
+      function scrollMap(position) {
+        console.log(position);
+        }
+      function handleError(error) {
+        console.log(error);
+        }
+        var watchId = navigator.geolocation.watchPosition(scrollMap, handleError);
+      // navigator.geolocation.clearWatch(watchId);
+    </script>
+
   </head>
   <body>
     <section class="page-header">
