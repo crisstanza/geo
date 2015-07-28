@@ -23,13 +23,21 @@
 			var ERRO = 3;
 			var ULTIMA_ATUALIZACAO_ERRO = 4;
 			var spans;
+			var map = null;
 
 			function handler(location) {
 				spans[POSICAO_INICIAL].innerHTML = location.coords.latitude + ", " + location.coords.longitude;
+				if (map != null) {
+					var ponto = new google.maps.LatLng(location.coords.latitude, location.coords.longitude);
+					var marker = new google.maps.Marker({ position: ponto, map: map });
+					map.panTo(ponto);
+				}
 			}
 			function scrollMap(location) {
 				spans[POSICAO_ATUAL].innerHTML = location.coords.latitude + ", " + location.coords.longitude;
 				spans[ULTIMA_ATUALIZACAO].innerHTML = new Date();
+				var ponto = new google.maps.LatLng(location.coords.latitude, location.coords.longitude);
+				var marker = new google.maps.Marker({ position: ponto, map: map });
 			}
 			function handleError(error) {
 				spans[ERRO].innerHTML = error.message;
@@ -43,11 +51,9 @@
 				var watchId = navigator.geolocation.watchPosition(scrollMap, handleError, opt);
 				// navigator.geolocation.clearWatch(watchId);
 				var mapProp = {
-					center: new google.maps.LatLng(-29.88723167, -51.15900809),
-					zoom: 5,
-					mapTypeId: google.maps.MapTypeId.ROADMAP
+					center: new google.maps.LatLng(-15.7797200, -47.9297200), zoom: 4, mapTypeId: google.maps.MapTypeId.ROADMAP
 				};
-				var map = new google.maps.Map(document.getElementById("map"), mapProp);
+				map = new google.maps.Map(document.getElementById("map"), mapProp);
 			}
 
 			window.addEventListener('load', start, false);
@@ -73,7 +79,7 @@
 		<br />
     	Erro: <span>?</span>,<br />última atualização: <span>?</span><br />
 		<br />
-		<div id="map" style="width: 600px; height: 300px;"></div>
+		<div id="map" style="width: 400px; height: 400px;"></div>
 
 	    <footer class="site-footer">
 			<span class="site-footer-owner">
