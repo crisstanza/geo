@@ -1,89 +1,94 @@
 <!DOCTYPE html>
 <html lang="en-us">
-  <head>
-    <meta charset="UTF-8">
-    <title>Geo by crisstanza</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" type="text/css" href="stylesheets/normalize.css" media="screen">
-    <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
-    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
-    <link rel="stylesheet" type="text/css" href="stylesheets/github-light.css" media="screen">
-    <style>
-      * {
-        font-family: Arial;
-      }
-    </style>
-    <script>
-      (function() {
+	<head>
+	<meta charset="UTF-8">
+	<title>Geolocation</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" type="text/css" href="stylesheets/normalize.css" media="screen">
+	<link href='http://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
+	<link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
+	<link rel="stylesheet" type="text/css" href="stylesheets/github-light.css" media="screen">
+	<style>
+		* {
+			font-family: Arial;
+		}
+	</style>
+	<script src="http://maps.googleapis.com/maps/api/js"></script>
+	<script>
+		(function() {
 
-        var POSICAO_INICIAL = 0;
-        var POSICAO_ATUAL = 1;
-        var ULTIMA_ATUALIZACAO = 2;
-        var ERRO = 3;
-        var ULTIMA_ATUALIZACAO_ERRO = 4;
-        var spans;
+			var POSICAO_INICIAL = 0;
+			var POSICAO_ATUAL = 1;
+			var ULTIMA_ATUALIZACAO = 2;
+			var ERRO = 3;
+			var ULTIMA_ATUALIZACAO_ERRO = 4;
+			var spans;
 
-        function handler(location) {
-          spans[POSICAO_INICIAL].innerHTML = location.coords.latitude + ", " + location.coords.longitude;
-        }
-        function scrollMap(location) {
-          spans[POSICAO_ATUAL].innerHTML = location.coords.latitude + ", " + location.coords.longitude;
-          spans[ULTIMA_ATUALIZACAO].innerHTML = new Date();
-        }
-        function handleError(error) {
-          spans[ERRO].innerHTML = error.message;
-          spans[ULTIMA_ATUALIZACAO_ERRO].innerHTML = new Date();
-        }
+			function handler(location) {
+				spans[POSICAO_INICIAL].innerHTML = location.coords.latitude + ", " + location.coords.longitude;
+			}
+			function scrollMap(location) {
+				spans[POSICAO_ATUAL].innerHTML = location.coords.latitude + ", " + location.coords.longitude;
+				spans[ULTIMA_ATUALIZACAO].innerHTML = new Date();
+			}
+			function handleError(error) {
+				spans[ERRO].innerHTML = error.message;
+				spans[ULTIMA_ATUALIZACAO_ERRO].innerHTML = new Date();
+			}
 
-        function start() {
-          spans = document.querySelectorAll('span');
-          navigator.geolocation.getCurrentPosition(handler);
-          var watchId = navigator.geolocation.watchPosition(scrollMap, handleError);
-          // navigator.geolocation.clearWatch(watchId);
-        }
+			function start() {
+				var opt = { enableHighAccuracy: true };
+				spans = document.querySelectorAll('span');
+				navigator.geolocation.getCurrentPosition(handler);
+				var watchId = navigator.geolocation.watchPosition(scrollMap, handleError, opt);
+				// navigator.geolocation.clearWatch(watchId);
+				var mapProp = {
+					center: new google.maps.LatLng(-29.88723167, -51.15900809),
+					zoom: 5,
+					mapTypeId: google.maps.MapTypeId.ROADMAP
+				};
+				var map = new google.maps.Map(document.getElementById("map"), mapProp);
+			}
 
-        window.addEventListener('load', start, false);
+			window.addEventListener('load', start, false);
 
-      })();
-    </script>
-  </head>
-  <body>
-    <section class="page-header">
-      <h1 class="project-name">Geo</h1>
-      <h2 class="project-tagline"></h2>
-      <a href="https://github.com/crisstanza/geo" class="btn">View on GitHub</a>
-      <a href="https://github.com/crisstanza/geo/zipball/master" class="btn">Download .zip</a>
-      <a href="https://github.com/crisstanza/geo/tarball/master" class="btn">Download .tar.gz</a>
-    </section>
+		})();
+	</script>
+	</head>
+	<body>
+	<section class="page-header">
+		<h1 class="project-name">Geo</h1>
+		<h2 class="project-tagline"></h2>
+		<a href="https://github.com/crisstanza/geo" class="btn">View on GitHub</a>
+		<a href="https://github.com/crisstanza/geo/zipball/master" class="btn">Download .zip</a>
+		<a href="https://github.com/crisstanza/geo/tarball/master" class="btn">Download .tar.gz</a>
+	</section>
 
-    <section class="main-content">
-      <h1>
-<a id="geo" class="anchor" href="#geo" aria-hidden="true"><!-- <span class="octicon octicon-link"></span>--></a>Geo</h1>
+	<section class="main-content">
+		<h1><a id="geo" class="anchor" href="#geo" aria-hidden="true"><!-- <span class="octicon octicon-link"></span>--></a>Geolocation</h1>
 
+		Posição inicial: <span>?</span><br />
+		<br />
+		Posição atual: <span>?</span>,<br />última atualização: <span>?</span><br />
+		<br />
+    	Erro: <span>?</span>,<br />última atualização: <span>?</span><br />
+		<br />
+		<div id="map" style="width: 600px; height: 300px;"></div>
 
-    Posição inicial: <span>?</span><br />
-    <br />
-    <br />
-    Posição atual: <span>?</span>,<br />última atualização: <span>?</span><br />
-    <br />
-    Erro: <span>?</span>,<br />última atualização: <span>?</span><br />
+	    <footer class="site-footer">
+			<span class="site-footer-owner">
+				<!--
+			  	<a href="https://github.com/crisstanza/geo">Geo</a> is maintained by <a href="https://github.com/crisstanza">crisstanza</a>.
+				-->
+			</span>
+			<span class="site-footer-credits">
+				<!-- This page was generated by <a href="https://pages.github.com">GitHub Pages</a> using the <a href="https://github.com/jasonlong/cayman-theme">Cayman theme</a> by <a 	href="https://twitter.com/jasonlong">Jason Long</a>.
+				-->
+			</span>
+	  	</footer>
 
+	</section>
 
-      <footer class="site-footer">
-        <span class="site-footer-owner">
-        <!--
-          <a href="https://github.com/crisstanza/geo">Geo</a> is maintained by <a href="https://github.com/crisstanza">crisstanza</a>.
-          -->
-          </span>
-
-        <span class="site-footer-credits">
-        <!-- This page was generated by <a href="https://pages.github.com">GitHub Pages</a> using the <a href="https://github.com/jasonlong/cayman-theme">Cayman theme</a> by <a href="https://twitter.com/jasonlong">Jason Long</a>.
-        --></span>
-      </footer>
-
-    </section>
-
-  
-  </body>
+	</body>
 </html>
 
